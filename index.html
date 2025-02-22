@@ -1,65 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Borderlands: The Pre-Sequel</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 2rem;
-        }
-
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-            margin-top: 1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        p {
-            margin-top: 0;
-            margin-bottom: 1rem;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-        }
-
-        .borderlands-handdrawn {
-            border: 4px dashed #000;
-            padding: 20px;
-            background-color: #fffacd;
-            /* Lemon chiffon background */
-            font-family: 'Permanent Marker', cursive;
-            box-shadow: 3px 3px 0px 0px #000;
-        }
-    </style>
+    <title>Cel-Shaded Effect</title>
+    <link rel="stylesheet" href="./assets/css/shaders/cel-shaded.css">
 </head>
-
 <body>
-    <div id="content"></div>
-
-    <script src="./assets/javascript/marked.min.js"></script>
-    <script>
-        // Fetch and convert the markdown content using fetch API
-        fetch('./assets/markdown/borderlands.md')
-            .then(response => response.text())
-            .then(markdownContent => {
-                const contentElement = document.getElementById('content');
-                contentElement.innerHTML = marked.parse(markdownContent);
-                const elements = contentElement.querySelectorAll('*')
-                elements.forEach(element => {
-                    element.classList.add('borderlands-handdrawn');
-                });
-            });
-    </script>
+    <div class="character">
+        <div class="highlight"></div>
+        <div class="shadow"></div>
+        <div class="rim-light"></div>
+        <div class="texture"></div>
+    </div>
+    <script src="./assets/js/shaders/cel-shaded.js"></script>
 </body>
-
 </html>
