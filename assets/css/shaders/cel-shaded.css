@@ -5,41 +5,11 @@ body {
     color: #fafafa;
 }
 
-@keyframes moveHighlight {
-    0% {
-        top: 20%;
-        left: 60%;
-    }
-    50% {
-        top: 10%;
-        left: 50%;
-    }
-    100% {
-        top: 20%;
-        left: 60%;
-    }
-}
-
-@keyframes moveShadow {
-    0% {
-        bottom: 5%;
-        left: 10%;
-    }
-    50% {
-        bottom: 10%;
-        left: 20%;
-    }
-    100% {
-        bottom: 5%;
-        left: 10%;
-    }
-}
-
 .character {
     position: relative;
     width: 200px;
     height: 400px;
-    background: url('../images/excali-prime.png') no-repeat center center;
+    background: url('../../img/character.png') no-repeat center center;
     background-size: cover;
     filter: contrast(2) brightness(1.3) saturate(2) drop-shadow(0 0 10px #fff);
     border: 5px solid #000;
@@ -86,7 +56,6 @@ body {
     z-index: 0;
     pointer-events: none;
     opacity: 0.9;
-    animation: moveHighlight 5s infinite alternate ease-in-out;
 }
 
 .character .shadow {
@@ -101,7 +70,6 @@ body {
     z-index: 0;
     pointer-events: none;
     opacity: 0.9;
-    animation: moveShadow 5s infinite alternate ease-in-out;
 }
 
 .character .rim-light {
@@ -123,7 +91,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('../images/brushstrokes.png') repeat;
+    background: url('../../img/shaders/brushstrokes.png') repeat;
     mix-blend-mode: overlay;
     opacity: 0.4;
     z-index: 4;
