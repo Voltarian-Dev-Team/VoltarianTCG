@@ -1,3 +1,8 @@
+/* Define a CSS custom property for card stacking offset */
+:root {
+  --card-stack-offset: 32px; /* Default offset for larger screens */
+}
+
 .card-stack {
     width: 250px;
     height: 395.97px;
@@ -144,6 +149,26 @@
     /* This is the same color as your .card-back */
 }
 
+/* Sell Duplicates Button in Token Bar */
+#sell-dupes-btn {
+    margin-left: 20px;
+    padding: 7px 22px; /* Matched to modal buttons */
+    font-size: 1em;
+    color: #fff;
+    background-color: #2e2f38; /* Matched to modal buttons */
+    border: none;
+    border-radius: 8px; /* Matched to modal buttons */
+    cursor: pointer;
+    transition: background-color 0.18s, box-shadow 0.18s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); /* Matched to modal buttons */
+}
+
+#sell-dupes-btn:hover {
+    background-color: #444657; /* Matched to modal buttons hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+
 /* Sell Modal Styles */
 #sell-modal {
     position: fixed;
@@ -178,6 +203,7 @@
     max-width: 95vw;
     z-index: 1;
     font-family: inherit;
+    box-sizing: border-box;
 }
 
 #sell-modal-content h2 {
@@ -190,7 +216,8 @@
 #sell-form {
     margin: 18px 0 10px 0;
     max-height: 320px;
-    overflow-y: auto;
+    overflow-y: auto;    
+    padding-right: 8px; /* Space for scrollbar without content overlap */
 }
 
 .sell-row {
@@ -244,6 +271,7 @@
     color: #ffd700;
     margin-left: 10px;
     min-width: 48px;
+    font-weight: 500;
     text-align: right;
 }
 
@@ -273,25 +301,27 @@
 /* Token feedback message */
 #token-feedback {
     position: fixed;
-    top: 18px;
+    bottom: 20px; /* Position from the bottom */
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) translateY(100%) scaleY(0); /* Initially hidden below and scaled flat */
+    transform-origin: bottom center; /* Animate scaleY from the bottom */
     background: #23242a;
     color: #ffd700;
     padding: 10px 28px;
-    border-radius: 12px;
+    border-radius: 12px; /* Rounded top corners for scroll look */
     font-size: 1.1em;
     font-weight: 500;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.25); /* Shadow on the top edge */
     opacity: 0;
     pointer-events: none;
     z-index: 9999;
-    transition: opacity 0.25s, transform 0.25s;
+    /* Updated transition for scroll effect */
+    transition: opacity 0.3s ease-in-out, transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 #token-feedback.visible {
     opacity: 1;
-    transform: translateX(-50%) translateY(8px) scale(1.06);
+    transform: translateX(-50%) translateY(0) scaleY(1); /* Unroll to full height and position */
 }
 
 /* Confirm Modal Styles */
@@ -328,6 +358,7 @@
     max-width: 95vw;
     z-index: 1;
     font-family: inherit;
+    box-sizing: border-box;
 }
 
 #confirm-modal-content h3 {
@@ -351,4 +382,96 @@
 
 #confirm-modal-content button:hover {
     background: #444657;
+}
+
+/* --- Tablet Styles --- */
+@media (max-width: 1024px) {
+    .character-card {
+        width: 180px; /* Slightly smaller cards for tablet */
+        height: 285.1px; /* Maintain aspect ratio */
+        margin: 20px auto;
+    }
+
+    .card-stack {
+        width: 180px;
+        height: 285.1px; /* Match card height */
+        margin: 20px auto;
+    }
+
+    #sell-modal-content,
+    #confirm-modal-content {
+        padding: 28px 24px 20px 24px;
+    }
+
+    #sell-form {
+        max-height: 40vh;
+    }
+}
+
+
+/* --- Mobile Styles --- */
+@media (max-width: 767px) {
+    :root {
+      --card-stack-offset: 20px; /* Reduced offset for smaller cards/screens */
+    }
+
+    .character-card {
+        width: 120px; /* Smaller cards for mobile */
+        height: 190.06px; /* Maintain aspect ratio */
+        margin: 15px auto; /* Reduced margin */
+    }
+
+    .card-stack {
+        width: 120px;
+        height: 190.06px; /* Match card height */
+        margin: 15px auto; /* Reduced margin */
+    }
+
+    #sell-modal-content,
+    #confirm-modal-content {
+        padding: 20px 15px 15px 15px;
+        min-width: auto;
+        width: 90vw;
+        max-width: 400px; /* Max width for very small mobiles */
+    }
+
+    #sell-form {
+        max-height: 55vh; /* Adjust max height for smaller viewports */
+        padding-right: 5px;
+    }
+
+    .sell-row {
+        flex-direction: column;
+        align-items: flex-start; /* Align items to the start */
+        gap: 8px; /* Space between label, input, value */
+    }
+
+    .sell-input {
+        width: 100%; /* Make input take full width */
+        box-sizing: border-box; /* Include padding and border in the element's total width and height */
+        margin-top: 4px;
+    }
+    .sell-value {
+        margin-left: 0; /* Remove left margin */
+        align-self: flex-end; /* Push to the right below the input */
+    }
+
+    #sell-modal-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    #sell-modal-actions button {
+        width: 100%; /* Make buttons full width */
+    }
+
+    #confirm-modal-content h3 {
+        font-size: 1.1em;
+    }
+    #confirm-modal-content button {
+        width: 100%;
+        margin-top: 8px;
+    }
+    #confirm-modal-content button:first-of-type {
+        margin-top: 15px;
+    }
 }

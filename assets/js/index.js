@@ -174,6 +174,72 @@ document.addEventListener("DOMContentLoaded", async () => {
         return cardDiv;
     }
 
+    // --- Move this function to top-level scope ---
+    async function addCardToStack(cardId, cardElementInstance) {
+        const info = CARD_DATA[cardId];
+        if (!info) {
+            console.error(`Card info not found for ${cardId} in addCardToStack`);
+            return;
+        }
+
+        const cardDisplayArea = document.getElementById('card-display-area');
+        let stack = cardDisplayArea.querySelector(`.card-stack[data-card-id="${cardId}"]`);
+        if (!stack) {
+            stack = document.createElement('div');
+            stack.className = 'card-stack';
+            stack.setAttribute('data-card-id', cardId);
+            stack.style.position = 'relative';
+            stack.style.display = 'inline-block';
+            stack.style.margin = '0 10px';
+            stack.style.verticalAlign = 'top';
+            cardDisplayArea.appendChild(stack);
+        }
+
+        const cardElem = cardElementInstance;
+        cardElem.style.position = 'absolute';
+        cardElem.style.transform = '';
+        cardElem.style.opacity = '';
+        cardElem.style.transition = '';
+        cardElem.classList.remove('pugman-animation-card', 'animate');
+
+        const stackCount = stack.childElementCount;
+        const stackOffsetString = getComputedStyle(document.documentElement).getPropertyValue('--card-stack-offset').trim() || '32px';
+        const stackOffset = parseInt(stackOffsetString, 10);
+        cardElem.style.top = `${stackCount * stackOffset}px`;
+        cardElem.style.left = '0';
+        cardElem.style.zIndex = stackCount + 1;
+
+        stack.appendChild(cardElem);
+        attachCardEventListeners(cardElem);
+
+        Array.from(stack.children).forEach((child, idx, arr) => {
+            if (idx !== arr.length - 1) {
+                child.style.pointerEvents = 'none';
+                child.style.filter = 'brightness(0.8) grayscale(0.3)';
+                child.style.cursor = 'default';
+            } else {
+                child.style.pointerEvents = '';
+                child.style.filter = '';
+                child.style.cursor = 'pointer';
+            }
+        });
+
+        cardElem.classList.add('is-visible');
+
+        if (cardElementInstance.dataset.specialAnimated === 'true') {
+            cardElem.classList.add('flipped');
+            triggerConfettiForCard(cardElem);
+        } else {
+            cardElem.classList.remove('flipped');
+            await new Promise(resolve => setTimeout(resolve, PACK_CARD_APPEAR_STAGGER_MS));
+            setTimeout(() => {
+                cardElem.classList.add('flipped');
+                triggerConfettiForCard(cardElem);
+            }, PACK_CARD_APPEAR_DURATION_MS);
+        }
+        delete cardElementInstance.dataset.specialAnimated;
+    }
+
     // Map card IDs to their data for dynamic creation
     const CARD_DATA = {
         'volt-prime': {
@@ -283,6 +349,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         return;
                     }
 
+                    const cardDisplayArea = document.getElementById('card-display-area');
                     let stack = cardDisplayArea.querySelector(`.card-stack[data-card-id="${cardId}"]`);
                     if (!stack) {
                         stack = document.createElement('div');
@@ -302,9 +369,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                     cardElem.style.opacity = '';
                     cardElem.style.transition = '';
                     cardElem.classList.remove('pugman-animation-card', 'animate');
-
+    
                     const stackCount = stack.childElementCount;
-                    cardElem.style.top = `${stackCount * 32}px`;
+                    // Determine stack offset from CSS custom property for responsiveness
+                    // In your CSS, define:
+                    // :root { --card-stack-offset: 32px; }
+                    // @media (max-width: 767px) { :root { --card-stack-offset: 20px; } }
+                    const stackOffsetString = getComputedStyle(document.documentElement).getPropertyValue('--card-stack-offset').trim() || '32px';
+                    const stackOffset = parseInt(stackOffsetString, 10);
+                    cardElem.style.top = `${stackCount * stackOffset}px`;
                     cardElem.style.left = '0';
                     cardElem.style.zIndex = stackCount + 1;
 
