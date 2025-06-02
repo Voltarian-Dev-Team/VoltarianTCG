@@ -534,7 +534,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         clearInterval(rollingTokenInterval);
         let current = parseInt(tokenCountElem.textContent, 10) || 0;
         const step = current < target ? 1 : -1;
-        const speed = 18; // ms per step, adjust for faster/slower roll
+        const speed = 3; // ms per step, much faster roll
 
         rollingTokenInterval = setInterval(() => {
             if (current === target) {
