@@ -1,7 +1,7 @@
 // --- Confetti Library Module ---
 // This entire block can be placed in a separate JavaScript file (e.g., 'confetti-lib.js').
 // It encapsulates all confetti-related logic and exposes only what's necessary.
-const Confetti = (function() {
+const Confetti = (function () {
     // Private variables for the confetti system
     let confettiCanvas;
     let confettiCtx;
